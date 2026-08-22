@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import React from "react";
 import { Facebook, Linkedin, Github, TerminalSquare } from "lucide-react";
 import { SiCodechef, SiCodeforces, SiHackerrank, SiHackerearth, SiStopstalk } from "react-icons/si";
 
