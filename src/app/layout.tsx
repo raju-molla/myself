@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Fraunces, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -53,6 +54,21 @@ export default function RootLayout({
         className={`${fraunces.variable} ${plexSans.variable} ${plexMono.variable} antialiased`}
       >
         {children}
+
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-G14F4TRTEP"
+          strategy="afterInteractive"
+        />
+
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'G-G14F4TRTEP');
+          `}
+        </Script>
       </body>
     </html>
   );
