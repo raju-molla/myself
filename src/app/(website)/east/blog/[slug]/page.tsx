@@ -107,7 +107,7 @@ export default function BlogDetailPage() {
           )}
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

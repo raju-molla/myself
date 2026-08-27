@@ -126,7 +126,7 @@ export default function OpenSourceListPage() {
           </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

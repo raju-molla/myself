@@ -126,7 +126,7 @@ export default function OpenSourceDetailPage() {
           )}
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }

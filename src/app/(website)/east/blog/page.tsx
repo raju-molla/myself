@@ -93,7 +93,7 @@ export default function BlogListPage() {
           </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
