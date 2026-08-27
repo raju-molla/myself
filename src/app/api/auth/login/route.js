@@ -10,6 +10,7 @@ export async function POST(request) {
 
     const adminEmail = process.env.ADMIN_EMAIL;
     const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
+    console.log("Admin email:", adminEmail, "Admin password hash:", adminPasswordHash);
 
     if (!adminEmail || !adminPasswordHash) {
       console.error("ADMIN_EMAIL / ADMIN_PASSWORD_HASH are not configured in the environment");
