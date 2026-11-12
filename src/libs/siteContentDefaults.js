@@ -5,26 +5,33 @@
 
 export const SITE_CONTENT_DEFAULTS = {
   hero: {
-    badge: "AI for Cybersecurity Researcher",
+    badge: "PhD Researcher · Computer Science",
     name: "Raju Molla",
     intro:
-      "MSc researcher in Cybersecurity & Digital Forensics building adaptive intrusion detection for edge–cloud–IoT systems, and a full-stack engineer who ships production software in .NET, Node.js and React.",
+      "PhD researcher at Keele University working at the intersection of artificial intelligence, cybersecurity and software engineering. I turn complex research into systems people can rely on.",
     location: "London, United Kingdom",
     badgeStat: "TryHackMe — Top 3% Global",
     resumeUrl: "/Raju_Molla_Update_Resume.pdf",
   },
 
   about: {
-    heading: "A little about me",
+    heading: "Research with real-world roots",
     paragraphs: [
-      "I'm Raju Molla, a software engineer and cybersecurity researcher currently reading for an MSc in Cybersecurity and Digital Forensics at the University of Wales Trinity Saint David in London. My dissertation builds a hybrid intrusion detection system for IoT and cloud environments — combining Random Forest, XGBoost and LSTM Autoencoder anomaly detection with explainable AI and privacy-preserving federated learning.",
-      "Before returning to research, I spent three years as a software engineer at Qtec Solution, Bimafy, A1DIGI and Bangla Institute, building backend systems, payment infrastructure and mobile applications for finance, insurance and healthcare products across Next.js, ASP.NET, Express.js and React Native. That production background is what keeps my research grounded — I care as much about whether a detection system can actually run at the edge as I do about its accuracy.",
+      "I'm a PhD researcher in Computer Science at Keele University. My research interests include AI for cybersecurity, adaptive intrusion detection, explainable and federated learning, and trustworthy machine learning.",
+      "Before starting my PhD, I completed an MSc in Cybersecurity and Digital Forensics with Distinction and worked as a software engineer building financial, healthcare and mobile products. That experience keeps my research grounded in the systems people actually use.",
     ],
-    photo: "/molla.png",
+    photo: "/raju_molla_img.jpg",
     education: [
       {
+        school: "Keele University",
+        degree: "PhD in Computer Science",
+        date: "Nov 2026 – Present",
+        location: "Keele, United Kingdom",
+        detail: "School of Computer Science and Mathematics. Full-time doctoral researcher.",
+      },
+      {
         school: "University of Wales Trinity Saint David",
-        degree: "MSc in Cybersecurity and Digital Forensics",
+        degree: "MSc in Cybersecurity and Digital Forensics — Distinction",
         date: "Jun 2025 – Jun 2026",
         location: "London, United Kingdom",
         detail:
@@ -133,7 +140,14 @@ export const SITE_CONTENT_DEFAULTS = {
       {
         title:
           "Beyond Permissions: Multi-Layer Monitoring and Forensic Behaviour Graph Analysis for Detecting Hidden and Collusive Chrome Extensions",
-        status: "Submitted · Forensic Science International: Digital Investigation (Elsevier)",
+        status: "Preprint · SSRN",
+        meta: "SSRN: 6906046",
+        href: "https://ssrn.com/abstract=6906046",
+      },
+      {
+        title:
+          "IoT-CloudSec: A Multi-Protocol, Multi-Context Simulation Benchmark for Leakage-Aware IoT Intrusion Detection Evaluation",
+        status: "Under revision · IEEE Access",
         meta: null,
         href: null,
       },
@@ -146,75 +160,31 @@ export const SITE_CONTENT_DEFAULTS = {
         type: "Research",
         name: "IoT-CloudSec Research Framework",
         description:
-          "Hybrid intrusion detection framework combining supervised learning with anomaly-aware sequence modelling, plus SHAP-based explainability and robustness evaluation.",
+          "A hybrid intrusion detection framework and multi-context benchmark for IoT, edge and cloud security, with SHAP explainability and temporal robustness evaluation.",
         stack: "Python, Scikit-learn, TensorFlow, SHAP",
         link: "https://ieee-dataport.org/documents/iot-cloud-sec",
         github: null,
         image: null,
       },
       {
-        type: "Web Application",
-        name: "UMIS-v2 (Microfinance)",
-        description: "Distributed microfinance platform deployed across four countries.",
-        stack: "ASP.NET, SQL Server, React.js",
+        type: "Distributed Platform",
+        name: "UMIS-v2 · Distributed Microfinance",
+        description:
+          "Scalable backend services, secure APIs and transaction-processing workflows for a multi-country microfinance platform across East Africa.",
+        stack: "ASP.NET, Razor Pages, SQL Server",
         link: "https://microfin.grapestl.com/",
         github: null,
         image: "/UMIS_v2.png",
       },
       {
-        type: "Web Application",
-        name: "UMIS — Uganda / Kenya / Zambia / Tanzania",
-        description: "Country-specific microfinance deployments serving East African markets.",
-        stack: "ASP.NET, Razor Pages, SQL Server, Ajax",
-        link: "https://mfug.umoja-international.com/",
-        github: null,
-        image: "/UMIS.png",
-      },
-      {
-        type: "Web Application",
-        name: "JG Healthcare",
-        description: "Web platform for healthcare services and patient workflows.",
-        stack: "Next.js, Express.js, MongoDB, Bootstrap",
-        link: "https://jghealthcare.com/",
-        github: null,
-        image: "/jg1.png",
-      },
-      {
-        type: "Web Application",
-        name: "Visabee",
-        description: "Web platform for insurance solutions.",
-        stack: "Next.js, Express.js, MongoDB, Bootstrap",
-        link: "https://visabee.com.bd/",
-        github: null,
-        image: "/visabee.png",
-      },
-      {
         type: "Backend / API",
         name: "Secure Healthcare API System",
         description:
-          "Secure RESTful APIs for healthcare data management, with authentication, authorization and protected patient-information workflows.",
+          "Secure REST APIs for healthcare data, with authentication, authorization and privacy-focused patient-information workflows.",
         stack: "Node.js, Express.js, MongoDB",
         link: null,
         github: null,
         image: null,
-      },
-      {
-        type: "Mobile App (Android / iOS)",
-        name: "Bimafy",
-        description: "Mobile app to manage insurance claims, live on Google Play and the App Store.",
-        stack: "React Native (Expo), Zustand, React Query",
-        link: "https://play.google.com/store/apps/details?id=com.bimafy&hl=en_US",
-        github: null,
-        image: "/bima.png",
-      },
-      {
-        type: "Mobile App (Android)",
-        name: "Bangla Institute",
-        description: "Android app for Bangla Institute's mobile services.",
-        stack: "Node.js, Express.js, MongoDB",
-        link: "https://play.google.com/store/apps/details?id=com.mobile_bangla_institute&hl=en_US",
-        github: null,
-        image: "/bangla.jpeg",
       },
     ],
   },
@@ -224,46 +194,32 @@ export const SITE_CONTENT_DEFAULTS = {
       {
         company: "Qtec Solution Limited",
         title: "Software Engineer",
-        date: "Mar 2024 – Jun 2025",
+        date: "May 2024 – Jun 2025",
         location: "Dhaka, Bangladesh",
         description: [
-          "Designed and implemented scalable, secure backend systems for financial and healthcare applications, including a payment gateway built on Next.js and MongoDB.",
-          "Developed and maintained Uganda Microfinance software (UMIS), fixing and extending deployments across Uganda, Zambia, Kenya, and Tanzania (ASP.NET, Razor Pages, SQL Server).",
-          "Built JG Healthcare (jghealthcare.com) and Visabee (visabee.com.bd) — production platforms on Next.js, Express.js, MongoDB and Bootstrap.",
-          "Collaborated with international teams to deploy systems across multiple regions with an emphasis on data integrity and reliability.",
+          "Designed and implemented scalable, secure backend systems for financial and healthcare applications.",
+          "Developed distributed systems and APIs with an emphasis on data integrity and reliability.",
+          "Collaborated with international teams to deploy systems across multiple regions.",
         ],
       },
       {
         company: "Bimafy Limited",
-        title: "Software Engineer (React Native)",
-        date: "Oct 2023 – Feb 2024",
+        title: "Software Developer",
+        date: "Dec 2023 – Apr 2024",
         location: "Dhaka, Bangladesh",
         description: [
-          "Developed and deployed cross-platform insurance-claims apps for iOS and Android using React Native, Zustand and React Query.",
-          "Integrated Google Cloud APIs and built OCR functionality with OpenCV-Python and EasyOCR, exposed via a Flask API.",
-          "Resolved complex bugs and led implementation of new features, contributing to a more stable release cycle.",
-        ],
-      },
-      {
-        company: "A1DIGI",
-        title: "Software Engineer",
-        date: "Jun 2023 – Oct 2023",
-        location: "Dhaka, Bangladesh",
-        description: [
-          "Built software on the WhatsApp API with a Node.js backend, Next.js frontend and MongoDB.",
-          "Developed a full-stack website using the MERN stack and contributed to mobile development in React Native.",
-          "Mentored interns on React.js and Node.js.",
+          "Developed cross-platform mobile applications with integrated cloud services and OCR functionality.",
+          "Implemented secure API integrations and real-time application features.",
         ],
       },
       {
         company: "Bangla Institute",
         title: "Backend Engineer Intern",
-        date: "Dec 2022 – Jun 2023",
+        date: "Mar 2023 – Jul 2023",
         location: "Remote",
         description: [
           "Built backend services and secure authentication systems using Node.js and Express.js.",
-          "Designed scalable data models and optimised database performance on MongoDB.",
-          "Delivered a companion Android app for Bangla Institute's mobile services.",
+          "Optimised database performance and designed scalable data models.",
         ],
       },
     ],
@@ -272,9 +228,9 @@ export const SITE_CONTENT_DEFAULTS = {
   achievements: {
     stats: [
       { icon: "target", value: "Top 3%", label: "TryHackMe, Global" },
-      { icon: "code", value: "130+", label: "Offensive & defensive security labs" },
+      { icon: "code", value: "130+", label: "Hands-on security labs" },
       { icon: "trophy", value: "ICPC 2023", label: "Dhaka Regional participant" },
-      { icon: "award", value: "37th & 38th", label: "Eastern University contests — Champion" },
+      { icon: "award", value: "Champion", label: "Eastern University 37th & 38th contests" },
     ],
     contests: [
       "ICPC Dhaka Regional Contest 2023",

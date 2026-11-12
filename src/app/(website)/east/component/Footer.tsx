@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Facebook, Linkedin, Github, TerminalSquare } from "lucide-react";
+import { Facebook, Github, GraduationCap, Linkedin, Network, TerminalSquare } from "lucide-react";
 import { SiCodechef, SiCodeforces, SiHackerrank, SiHackerearth, SiStopstalk } from "react-icons/si";
 
 export default function Footer() {
@@ -63,6 +63,12 @@ export default function Footer() {
             </a>
             <a href="https://github.com/raju-molla" target="_blank" rel="noopener noreferrer" style={{ color: "var(--text-faint)" }}>
               <Github size={19} />
+            </a>
+            <a href="https://scholar.google.co.uk/citations?user=dXT2AXIAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" aria-label="Google Scholar" title="Google Scholar" style={{ color: "var(--text-faint)" }}>
+              <GraduationCap size={19} />
+            </a>
+            <a href="https://www.researchgate.net/profile/Raju-Molla-2" target="_blank" rel="noopener noreferrer" aria-label="ResearchGate" title="ResearchGate" style={{ color: "var(--text-faint)" }}>
+              <Network size={19} />
             </a>
           </div>
         </div>

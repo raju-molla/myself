@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { Github, ExternalLink, Star } from "lucide-react";
 import Navbar from "../../navbar/page";
 import Footer from "../../component/Footer";
+import { HANDBOOK_PROJECT } from "@/libs/handbookContent";
 
 type Project = {
   title: string;
@@ -14,8 +15,9 @@ type Project = {
   repoUrl?: string;
   liveUrl?: string;
   stars: number;
-  license: string;
+  license?: string;
   status: string;
+  resourceType?: string;
 };
 
 export default function OpenSourceDetailPage() {
@@ -29,18 +31,30 @@ export default function OpenSourceDetailPage() {
       try {
         const res = await fetch(`/api/opensource/${slug}`);
         if (!res.ok) {
-          setMissing(true);
+          if (slug === HANDBOOK_PROJECT.slug) {
+            setProject(HANDBOOK_PROJECT);
+          } else {
+            setMissing(true);
+          }
           return;
         }
         const data = await res.json();
         if (data.project.status !== "published") {
-          setMissing(true);
+          if (slug === HANDBOOK_PROJECT.slug) {
+            setProject(HANDBOOK_PROJECT);
+          } else {
+            setMissing(true);
+          }
           return;
         }
         setProject(data.project);
       } catch (err) {
         console.error(err);
-        setMissing(true);
+        if (slug === HANDBOOK_PROJECT.slug) {
+          setProject(HANDBOOK_PROJECT);
+        } else {
+          setMissing(true);
+        }
       } finally {
         setLoading(false);
       }
@@ -69,6 +83,15 @@ export default function OpenSourceDetailPage() {
                 {project.description}
               </p>
 
+              {project.resourceType && (
+                <p
+                  className="mt-3 font-mono text-xs uppercase tracking-widest"
+                  style={{ color: "var(--accent)" }}
+                >
+                  {project.resourceType}
+                </p>
+              )}
+
               <div className="flex flex-wrap items-center gap-4 mt-6 font-mono text-sm">
                 {project.repoUrl && (
                   <a
@@ -89,7 +112,8 @@ export default function OpenSourceDetailPage() {
                     className="flex items-center gap-2 px-4 py-2 rounded-md border"
                     style={{ borderColor: "var(--border-strong)", color: "var(--text)" }}
                   >
-                    <ExternalLink size={16} /> Live Demo
+                    <ExternalLink size={16} />{" "}
+                    {project.resourceType ? "Read Publication" : "Live Demo"}
                   </a>
                 )}
                 {project.stars > 0 && (
@@ -97,7 +121,9 @@ export default function OpenSourceDetailPage() {
                     <Star size={16} /> {project.stars}
                   </span>
                 )}
-                <span style={{ color: "var(--text-faint)" }}>{project.license}</span>
+                {project.license && (
+                  <span style={{ color: "var(--text-faint)" }}>{project.license}</span>
+                )}
               </div>
 
               {project.techStack?.length > 0 && (

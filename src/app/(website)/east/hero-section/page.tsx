@@ -1,180 +1,258 @@
 "use client";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { MapPin, ShieldCheck, ArrowRight, Download } from "lucide-react";
-import { useSiteContent } from "@/libs/useSiteContent";
-import { SITE_CONTENT_DEFAULTS } from "@/libs/siteContentDefaults";
 
-const LOG_LINES = [
-  "[INFO] iot-cloud-sec :: benchmark stream initialised (edge + cloud + orchestration)",
-  "[MODEL] random_forest + xgboost :: ensemble vote → benign (p=0.981)",
-  "[MODEL] lstm-autoencoder :: reconstruction_error=0.043 :: within baseline",
-  "[DRIFT] concept-drift monitor :: distribution shift detected on window t+142",
-  "[ADAPT] retraining triggered :: federated update queued across 4 edge nodes",
-  "[ALERT] anomaly score 0.92 :: unseen attack pattern flagged for review",
-  "[XAI] shap_explainer :: top features → packet_iat, flow_duration, syn_ratio",
-  "[PRIVACY] gradients aggregated :: raw telemetry never leaves edge node",
-  "[STATUS] hybrid IDS :: edge-cloud-iot pipeline nominal",
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUpRight,
+  Download,
+  Github,
+  GraduationCap,
+  Linkedin,
+  MapPin,
+  Network,
+  Sparkles,
+} from "lucide-react";
+
+const expertise = [
+  "AI for cybersecurity",
+  "Adaptive intrusion detection",
+  "Federated learning",
+  "Full-stack engineering",
 ];
 
-function ThreatFeed() {
-  const [visible, setVisible] = useState<string[]>(LOG_LINES.slice(0, 5));
-  const [cursor, setCursor] = useState(5);
-
-  useEffect(() => {
-    const id = setInterval(() => {
-      setVisible((prev) => {
-        const next = LOG_LINES[cursor % LOG_LINES.length];
-        const updated = [...prev.slice(1), next];
-        return updated;
-      });
-      setCursor((c) => c + 1);
-    }, 2200);
-    return () => clearInterval(id);
-  }, [cursor]);
-
-  const tone = (line: string) => {
-    if (line.startsWith("[ALERT]")) return "var(--signal)";
-    if (line.startsWith("[DRIFT]") || line.startsWith("[ADAPT]")) return "var(--accent-strong)";
-    return "var(--text-muted)";
-  };
-
-  return (
-    <div
-      className="relative w-full max-w-md rounded-xl overflow-hidden"
-      style={{
-        background: "var(--surface)",
-        border: "1px solid var(--border-strong)",
-        boxShadow: "0 0 0 1px rgba(57,230,176,0.06), 0 20px 60px -20px rgba(0,0,0,0.6)",
-      }}
-    >
-      {/* window chrome */}
-      <div
-        className="flex items-center justify-between px-4 py-2.5"
-        style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-elevated)" }}
-      >
-        <div className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 rounded-full" style={{ background: "#f2555a" }} />
-          <span className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--signal)" }} />
-          <span className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--accent)" }} />
-        </div>
-        <span className="font-mono text-xs tracking-wide" style={{ color: "var(--text-faint)" }}>
-          hybrid-ids — live monitor
-        </span>
-      </div>
-
-      {/* log body */}
-      <div className="relative p-4 h-64 overflow-hidden font-mono text-[12px] leading-relaxed">
-        <div
-          className="scan-sweep pointer-events-none absolute inset-x-0 h-16 opacity-40"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent, rgba(57,230,176,0.10), transparent)",
-          }}
-        />
-        {visible.map((line, i) => (
-          <motion.p
-            key={line + i}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4 }}
-            className="whitespace-pre-wrap break-words mb-1.5"
-            style={{ color: tone(line) }}
-          >
-            {line}
-          </motion.p>
-        ))}
-        <p className="mt-1" style={{ color: "var(--accent)" }}>
-          <span>root@edge-node:~$</span> <span className="caret">▍</span>
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export default function Hero() {
-  const { data: hero } = useSiteContent("hero", SITE_CONTENT_DEFAULTS.hero);
-
-  const smoothScrollTo = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) element.scrollIntoView({ behavior: "smooth" });
-  };
+  const shouldReduceMotion = useReducedMotion() ?? false;
 
   return (
-    <section
-      className="grid-scan min-h-screen flex items-center w-full px-6 sm:px-8 pt-28 pb-16"
-      style={{ background: "var(--bg)" }}
-    >
-      <div className="max-w-6xl mx-auto w-full grid md:grid-cols-[1.15fr_1fr] gap-16 items-center">
-        {/* Left: identity */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-        >
-          <div
-            className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] px-3 py-1.5 rounded-full mb-6"
-            style={{ border: "1px solid var(--border-strong)", color: "var(--accent)" }}
-          >
-            <ShieldCheck size={14} />
-            {hero.badge}
-          </div>
+    <>
+      <section
+        id="home"
+        className="hero-section relative isolate min-h-[min(900px,100svh)] overflow-hidden px-6 pb-16 pt-28 sm:px-8 sm:pt-32"
+        style={{ background: "var(--bg)" }}
+      >
+        <div className="hero-glow hero-glow-one" aria-hidden="true" />
+        <div className="hero-glow hero-glow-two" aria-hidden="true" />
+        <div className="hero-grid absolute inset-0 -z-10" aria-hidden="true" />
 
-          <h1
-            className="font-display text-5xl sm:text-6xl font-semibold leading-[1.05] mb-6"
-            style={{ color: "var(--text)" }}
-          >
-            {hero.name}
-          </h1>
-
-          <p className="max-w-xl text-lg leading-relaxed mb-8" style={{ color: "var(--text-muted)" }}>
-            {hero.intro}
-          </p>
-
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-10 font-mono text-sm" style={{ color: "var(--text-faint)" }}>
-            <span className="flex items-center gap-1.5">
-              <MapPin size={14} /> {hero.location}
-            </span>
-            <span className="hidden sm:inline">·</span>
-            <span>{hero.badgeStat}</span>
-          </div>
-
-          <div className="flex flex-wrap gap-4">
-            <button
-              onClick={() => smoothScrollTo("research")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-transform hover:-translate-y-0.5"
-              style={{ background: "var(--accent)", color: "#04120d" }}
+        <div className="mx-auto grid min-h-[min(700px,calc(100svh-8rem))] max-w-7xl items-center gap-12 lg:grid-cols-[1.13fr_0.87fr] lg:gap-4">
+          <div className="relative z-10 max-w-3xl">
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, ease: "easeOut" }}
+              className="mb-7 inline-flex items-center gap-2.5 rounded-full border px-4 py-2 font-mono text-[10px] uppercase tracking-[0.18em] sm:text-xs"
+              style={{
+                color: "var(--accent-strong)",
+                borderColor: "var(--border-strong)",
+                background: "var(--surface)",
+              }}
             >
-              View Research <ArrowRight size={16} />
-            </button>
-            <button
-              onClick={() => smoothScrollTo("projects")}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors"
-              style={{ border: "1px solid var(--border-strong)", color: "var(--text)" }}
+              <span className="live-dot" />
+              PhD researcher · Computer Science
+            </motion.div>
+
+            <motion.h1
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 28 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.08, ease: "easeOut" }}
+              className="max-w-4xl font-display text-[clamp(3.35rem,8vw,7.4rem)] font-medium leading-[0.91] tracking-[-0.075em]"
+              style={{ color: "var(--text)" }}
             >
-              View Projects
-            </button>
-            <a
-              href={hero.resumeUrl}
-              download
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-colors"
+              Making
+              <br />
+              <span className="hero-title-accent">intelligence</span>
+              <br />
+              work for a
+              <br />
+              safer world<span style={{ color: "var(--accent)" }}>.</span>
+            </motion.h1>
+
+            <motion.p
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.24, ease: "easeOut" }}
+              className="mt-7 max-w-xl text-base leading-7 sm:text-lg sm:leading-8"
               style={{ color: "var(--text-muted)" }}
             >
-              <Download size={16} /> Download CV
-            </a>
-          </div>
-        </motion.div>
+              I&apos;m Raju Molla, a PhD researcher in Computer Science at Keele
+              University. I work at the intersection of AI, cybersecurity, and
+              software engineering—turning complex research into systems people
+              can rely on.
+            </motion.p>
 
-        {/* Right: signature terminal */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-          className="flex justify-center md:justify-end"
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.65, delay: 0.36, ease: "easeOut" }}
+              className="mt-8 flex flex-wrap items-center gap-3"
+            >
+              <a
+                href="#research"
+                className="hero-primary-link inline-flex items-center gap-3 rounded-full px-6 py-3.5 text-sm font-semibold"
+              >
+                Explore my research <ArrowRight size={16} />
+              </a>
+              <a
+                href="/Raju_Molla_Update_Resume.pdf"
+                download
+                className="hero-secondary-link inline-flex items-center gap-2 rounded-full border px-5 py-3.5 text-sm font-medium"
+              >
+                <Download size={15} /> Download CV
+              </a>
+            </motion.div>
+
+            <motion.div
+              initial={shouldReduceMotion ? false : { opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.55 }}
+              className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3 font-mono text-xs"
+              style={{ color: "var(--text-faint)" }}
+            >
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin size={13} /> London, United Kingdom
+              </span>
+              <span className="hidden h-1 w-1 rounded-full sm:block" style={{ background: "var(--border-strong)" }} />
+              <a
+                className="hero-social-link inline-flex items-center gap-1.5"
+                href="https://github.com/raju-molla"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Github size={14} /> GitHub <ArrowUpRight size={11} />
+              </a>
+              <a
+                className="hero-social-link inline-flex items-center gap-1.5"
+                href="https://www.linkedin.com/in/raju-molla-7574bb193/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Linkedin size={14} /> LinkedIn <ArrowUpRight size={11} />
+              </a>
+              <a
+                className="hero-social-link inline-flex items-center gap-1.5"
+                href="https://scholar.google.co.uk/citations?user=dXT2AXIAAAAJ&hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <GraduationCap size={14} /> Google Scholar <ArrowUpRight size={11} />
+              </a>
+              <a
+                className="hero-social-link inline-flex items-center gap-1.5"
+                href="https://www.researchgate.net/profile/Raju-Molla-2"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Network size={14} /> ResearchGate <ArrowUpRight size={11} />
+              </a>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={shouldReduceMotion ? false : { opacity: 0, scale: 0.94, x: 24 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 0.2, ease: "easeOut" }}
+            className="hero-portrait-scene relative mx-auto mt-3 aspect-square w-full max-w-[500px] lg:ml-auto lg:mt-0"
+          >
+            <div className="hero-orbit hero-orbit-outer" aria-hidden="true" />
+            <div className="hero-orbit hero-orbit-inner" aria-hidden="true" />
+            <div className="hero-orbit-dot" aria-hidden="true" />
+
+            <motion.div
+              animate={shouldReduceMotion ? undefined : { y: [0, -9, 0] }}
+              transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              className="hero-portrait-frame absolute inset-[13%] overflow-hidden rounded-[48%_48%_44%_44%] border"
+            >
+              <div className="hero-portrait-backdrop absolute inset-0" />
+              <Image
+                src="/raju_molla_img.jpg"
+                alt="Portrait of Raju Molla"
+                fill
+                priority
+                sizes="(max-width: 768px) 75vw, 440px"
+                className="hero-portrait-image object-cover"
+              />
+              <div className="hero-portrait-shade absolute inset-0" />
+              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 sm:p-7">
+                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/75">
+                  Research · Build · Repeat
+                </span>
+                <Sparkles size={17} className="text-[var(--accent)]" />
+              </div>
+            </motion.div>
+
+            <motion.div
+              animate={shouldReduceMotion ? undefined : { y: [0, 7, 0], rotate: [0, -1.5, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              className="hero-float-card hero-float-card-top absolute right-0 top-[16%] rounded-2xl border p-4 sm:right-[-2%] sm:p-5"
+            >
+              <span className="mb-2 block font-mono text-[9px] uppercase tracking-[0.2em]" style={{ color: "var(--text-faint)" }}>
+                Currently
+              </span>
+              <span className="block font-display text-lg font-medium" style={{ color: "var(--text)" }}>
+                Keele University
+              </span>
+              <span className="mt-1 block text-xs" style={{ color: "var(--text-muted)" }}>
+                PhD · Computer Science
+              </span>
+            </motion.div>
+
+            <motion.div
+              animate={shouldReduceMotion ? undefined : { y: [0, -7, 0], rotate: [0, 1.5, 0] }}
+              transition={{ duration: 5.5, delay: 0.5, repeat: Infinity, ease: "easeInOut" }}
+              className="hero-float-card hero-float-card-bottom absolute bottom-[13%] left-0 flex items-center gap-3 rounded-2xl border p-4 sm:left-[-3%] sm:p-5"
+            >
+              <span className="hero-stat-icon flex h-10 w-10 items-center justify-center rounded-full">
+                <Sparkles size={17} />
+              </span>
+              <span>
+                <span className="block font-display text-xl font-semibold" style={{ color: "var(--text)" }}>
+                  Top 3%
+                </span>
+                <span className="block font-mono text-[9px] uppercase tracking-[0.16em]" style={{ color: "var(--text-faint)" }}>
+                  TryHackMe · Global
+                </span>
+              </span>
+            </motion.div>
+
+            <span className="hero-scene-index absolute bottom-[4%] right-[8%] font-mono text-[10px] tracking-[0.2em]" style={{ color: "var(--text-faint)" }}>
+              RM / 01
+            </span>
+          </motion.div>
+        </div>
+
+        <a
+          href="#about"
+          className="hero-scroll-cue absolute bottom-6 left-1/2 hidden -translate-x-1/2 items-center gap-2 font-mono text-[9px] uppercase tracking-[0.2em] sm:flex"
+          style={{ color: "var(--text-faint)" }}
         >
-          <ThreatFeed />
-        </motion.div>
+          Scroll to explore <ArrowDown size={12} />
+        </a>
+      </section>
+
+      <div className="expertise-marquee overflow-hidden border-y py-4" aria-label="Areas of expertise">
+        <div className="expertise-marquee-track flex w-max items-center gap-8 whitespace-nowrap">
+          {[0, 1].map((repeat) => (
+            <div
+              key={repeat}
+              className="flex items-center gap-8"
+              aria-hidden={repeat === 1}
+            >
+              {expertise.map((item) => (
+                <span
+                  key={`${repeat}-${item}`}
+                  className="inline-flex items-center gap-8 font-mono text-[10px] uppercase tracking-[0.2em] sm:text-xs"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {item}
+                  <span className="text-base" style={{ color: "var(--accent)" }}>✳</span>
+                </span>
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
-    </section>
+    </>
   );
 }

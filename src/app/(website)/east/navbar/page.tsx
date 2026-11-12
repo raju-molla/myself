@@ -8,12 +8,12 @@ import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/east/about", label: "About", icon: User },
+  { href: "/#about", label: "About", icon: User },
   { href: "/#research", label: "Research", icon: FlaskConical },
-  { href: "/east/projects", label: "Projects", icon: Folder },
+  { href: "/#projects", label: "Projects", icon: Folder },
   { href: "/east/blog", label: "Blog", icon: Newspaper },
   { href: "/east/open-source", label: "Open Source", icon: GitBranch },
-  { href: "/east/contact", label: "Contact", icon: Mail },
+  { href: "/#contact", label: "Contact", icon: Mail },
 ];
 
 export default function Navbar() {

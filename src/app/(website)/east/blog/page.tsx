@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Eye } from "lucide-react";
 import Navbar from "../navbar/page";
 import Footer from "../component/Footer";
+import { HANDBOOK_BLOG_POST } from "@/libs/handbookContent";
 
 type Blog = {
   _id: string;
@@ -26,9 +27,19 @@ export default function BlogListPage() {
       try {
         const res = await fetch("/api/blogs?status=published&limit=50");
         const data = await res.json();
-        setBlogs(data.blogs || []);
+        const publishedBlogs: Blog[] = data.blogs || [];
+        setBlogs(
+          publishedBlogs.some((blog) => blog.slug === HANDBOOK_BLOG_POST.slug)
+            ? publishedBlogs
+            : [...publishedBlogs, HANDBOOK_BLOG_POST].sort(
+                (a, b) =>
+                  new Date(b.publishedAt || b.createdAt).getTime() -
+                  new Date(a.publishedAt || a.createdAt).getTime()
+              )
+        );
       } catch (err) {
         console.error(err);
+        setBlogs([HANDBOOK_BLOG_POST]);
       } finally {
         setLoading(false);
       }

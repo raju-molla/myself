@@ -23,11 +23,13 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Raju Molla — AI for Cybersecurity Researcher & Software Engineer",
+  title: "Raju Molla — PhD Researcher in Computer Science",
   description:
-    "Raju Molla is an MSc Cybersecurity & Digital Forensics researcher and full-stack software engineer, working on adaptive intrusion detection, explainable AI, and federated learning for edge-cloud-IoT systems.",
+    "Raju Molla is a PhD researcher in Computer Science at Keele University, working across AI for cybersecurity, adaptive intrusion detection, and trustworthy machine learning.",
   keywords: [
     "Raju Molla",
+    "PhD Researcher",
+    "Keele University",
     "Cybersecurity Researcher",
     "Intrusion Detection System",
     "Explainable AI",
@@ -36,9 +38,9 @@ export const metadata: Metadata = {
     "Full-Stack Developer",
   ],
   openGraph: {
-    title: "Raju Molla — AI for Cybersecurity Researcher & Software Engineer",
+    title: "Raju Molla — PhD Researcher in Computer Science",
     description:
-      "MSc Cybersecurity & Digital Forensics researcher and full-stack engineer specialising in adaptive intrusion detection and explainable AI.",
+      "PhD researcher at Keele University working across AI for cybersecurity, adaptive intrusion detection, and trustworthy machine learning.",
     type: "website",
   },
 };

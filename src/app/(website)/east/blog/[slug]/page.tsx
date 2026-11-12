@@ -2,10 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useParams, notFound } from "next/navigation";
-import { Eye } from "lucide-react";
+import { ArrowUpRight, Eye } from "lucide-react";
 import Navbar from "../../navbar/page";
 import Footer from "../../component/Footer";
 import CommentThread from "../../component/CommentThread";
+import {
+  HANDBOOK_BLOG_POST,
+  HANDBOOK_PUBLICATION_URL,
+} from "@/libs/handbookContent";
 
 type Blog = {
   _id: string;
@@ -31,18 +35,30 @@ export default function BlogDetailPage() {
       try {
         const res = await fetch(`/api/blogs/${slug}`);
         if (!res.ok) {
-          setMissing(true);
+          if (slug === HANDBOOK_BLOG_POST.slug) {
+            setBlog(HANDBOOK_BLOG_POST);
+          } else {
+            setMissing(true);
+          }
           return;
         }
         const data = await res.json();
         if (data.blog.status !== "published") {
-          setMissing(true);
+          if (slug === HANDBOOK_BLOG_POST.slug) {
+            setBlog(HANDBOOK_BLOG_POST);
+          } else {
+            setMissing(true);
+          }
           return;
         }
         setBlog(data.blog);
       } catch (err) {
         console.error(err);
-        setMissing(true);
+        if (slug === HANDBOOK_BLOG_POST.slug) {
+          setBlog(HANDBOOK_BLOG_POST);
+        } else {
+          setMissing(true);
+        }
       } finally {
         setLoading(false);
       }
@@ -102,7 +118,20 @@ export default function BlogDetailPage() {
                 {blog.content}
               </div>
 
-              <CommentThread blogId={blog._id} />
+              {slug === HANDBOOK_BLOG_POST.slug && (
+                <a
+                  href={HANDBOOK_PUBLICATION_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-primary-link mt-8 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
+                >
+                  Read the handbook on ResearchGate <ArrowUpRight size={15} />
+                </a>
+              )}
+
+              {blog._id !== HANDBOOK_BLOG_POST._id && (
+                <CommentThread blogId={blog._id} />
+              )}
             </article>
           )}
         </div>
