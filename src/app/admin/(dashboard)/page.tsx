@@ -5,13 +5,14 @@ import Link from "next/link";
 import { Newspaper, GitBranch, FileEdit, CheckCircle2, Star } from "lucide-react";
 import PageHeader from "./component/PageHeader";
 
-type Blog = { _id: string; status: string };
-type Project = { _id: string; status: string; featured: boolean };
+type Blog = { _id: string; slug: string; status: string };
+type Project = { _id: string; slug: string; status: string; featured: boolean };
 
 export default function AdminDashboard() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -20,12 +21,16 @@ export default function AdminDashboard() {
           fetch("/api/blogs?limit=100"),
           fetch("/api/opensource?limit=100"),
         ]);
+        if (!blogRes.ok || !projRes.ok) {
+          throw new Error("Failed to load admin dashboard content");
+        }
         const blogData = await blogRes.json();
         const projData = await projRes.json();
         setBlogs(blogData.blogs || []);
         setProjects(projData.projects || []);
       } catch (err) {
         console.error("Failed to load dashboard stats", err);
+        setLoadError(true);
       } finally {
         setLoading(false);
       }
@@ -60,6 +65,11 @@ export default function AdminDashboard() {
           </p>
         ) : (
           <>
+            {loadError && (
+              <p className="mb-4 text-sm" role="alert" style={{ color: "var(--signal)" }}>
+                Saved content could not be loaded. Refresh the page to try again.
+              </p>
+            )}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {stats.map(({ label, value, icon: Icon, accent }) => (
                 <div

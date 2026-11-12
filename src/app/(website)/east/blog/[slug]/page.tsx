@@ -1,142 +1,78 @@
-"use client";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import connectMongoDb from "@/libs/mongodb";
+import Blog from "@/models/blog";
+import BlogArticle from "./BlogArticle";
 
-import { useEffect, useState } from "react";
-import { useParams, notFound } from "next/navigation";
-import { ArrowUpRight, Eye } from "lucide-react";
-import Navbar from "../../navbar/page";
-import Footer from "../../component/Footer";
-import CommentThread from "../../component/CommentThread";
-import {
-  HANDBOOK_BLOG_POST,
-  HANDBOOK_PUBLICATION_URL,
-} from "@/libs/handbookContent";
+type BlogPageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-type Blog = {
-  _id: string;
+type BlogRecord = {
+  _id: { toString(): string };
   title: string;
-  content: string;
+  slug: string;
   excerpt?: string;
   tags: string[];
   author: string;
+  coverImage?: string;
+  content: string;
   status: string;
-  publishedAt?: string;
-  createdAt: string;
+  publishedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   views: number;
 };
 
-export default function BlogDetailPage() {
-  const { slug } = useParams<{ slug: string }>();
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [missing, setMissing] = useState(false);
+export const dynamic = "force-dynamic";
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch(`/api/blogs/${slug}`);
-        if (!res.ok) {
-          if (slug === HANDBOOK_BLOG_POST.slug) {
-            setBlog(HANDBOOK_BLOG_POST);
-          } else {
-            setMissing(true);
-          }
-          return;
-        }
-        const data = await res.json();
-        if (data.blog.status !== "published") {
-          if (slug === HANDBOOK_BLOG_POST.slug) {
-            setBlog(HANDBOOK_BLOG_POST);
-          } else {
-            setMissing(true);
-          }
-          return;
-        }
-        setBlog(data.blog);
-      } catch (err) {
-        console.error(err);
-        if (slug === HANDBOOK_BLOG_POST.slug) {
-          setBlog(HANDBOOK_BLOG_POST);
-        } else {
-          setMissing(true);
-        }
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, [slug]);
+async function findPublishedBlog(slug: string): Promise<BlogRecord | null> {
+  await connectMongoDb();
+  return Blog.findOne({ slug, status: "published" }).lean<BlogRecord>().exec();
+}
 
-  return (
-    <>
-      <Navbar />
-      <main className="min-h-screen pt-32 pb-24" style={{ background: "var(--bg)" }}>
-        <div className="max-w-3xl mx-auto px-6 sm:px-8">
-          {loading ? (
-            <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
-              Loading…
-            </p>
-          ) : missing || !blog ? (
-            <p className="font-mono text-sm" style={{ color: "var(--signal)" }}>
-              Post not found.
-            </p>
-          ) : (
-            <article>
-              <p className="font-mono text-xs flex items-center gap-2" style={{ color: "var(--text-faint)" }}>
-                <span>
-                  {new Date(blog.publishedAt || blog.createdAt).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </span>
-                <span>·</span>
-                <span>{blog.author}</span>
-                <span>·</span>
-                <span className="flex items-center gap-1">
-                  <Eye size={13} /> {blog.views ?? 0} views
-                </span>
-              </p>
-              <h1 className="font-display text-4xl font-semibold mt-3" style={{ color: "var(--text)" }}>
-                {blog.title}
-              </h1>
-              {blog.tags?.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-4">
-                  {blog.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs font-mono px-2.5 py-1 rounded-full"
-                      style={{ background: "var(--accent-soft)", color: "var(--accent-strong)" }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-              <div
-                className="mt-10 whitespace-pre-wrap leading-relaxed"
-                style={{ color: "var(--text)" }}
-              >
-                {blog.content}
-              </div>
+export async function generateMetadata({
+  params,
+}: BlogPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const blog = await findPublishedBlog(slug);
 
-              {slug === HANDBOOK_BLOG_POST.slug && (
-                <a
-                  href={HANDBOOK_PUBLICATION_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hero-primary-link mt-8 inline-flex items-center gap-2 rounded-full px-5 py-3 text-sm font-semibold"
-                >
-                  Read the handbook on ResearchGate <ArrowUpRight size={15} />
-                </a>
-              )}
+  if (!blog) {
+    return { title: "Blog post not found | Raju Molla" };
+  }
 
-              {blog._id !== HANDBOOK_BLOG_POST._id && (
-                <CommentThread blogId={blog._id} />
-              )}
-            </article>
-          )}
-        </div>
-      </main>
-      {/* <Footer /> */}
-    </>
-  );
+  const url = `https://www.rajumolla.com/east/blog/${blog.slug}`;
+  return {
+    title: blog.title,
+    description: blog.excerpt || blog.title,
+    keywords: blog.tags,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      title: blog.title,
+      description: blog.excerpt || blog.title,
+      url,
+      siteName: "Raju Molla",
+      publishedTime: blog.publishedAt?.toISOString(),
+      modifiedTime: blog.updatedAt?.toISOString(),
+      authors: [blog.author],
+      tags: blog.tags,
+      images: blog.coverImage ? [blog.coverImage] : undefined,
+    },
+    twitter: {
+      card: blog.coverImage ? "summary_large_image" : "summary",
+      title: blog.title,
+      description: blog.excerpt || blog.title,
+      images: blog.coverImage ? [blog.coverImage] : undefined,
+    },
+  };
+}
+
+export default async function BlogPage({ params }: BlogPageProps) {
+  const { slug } = await params;
+  const blog = await findPublishedBlog(slug);
+
+  if (!blog) notFound();
+
+  return <BlogArticle blog={blog} />;
 }

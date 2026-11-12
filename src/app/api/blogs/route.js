@@ -2,6 +2,7 @@ import connectMongoDb from "@/libs/mongodb";
 import Blog from "@/models/blog";
 import { NextResponse } from "next/server";
 import { getAdminFromRequest } from "@/libs/auth";
+import sanitizeBlogContent from "@/libs/sanitizeBlogContent";
 
 function slugify(str) {
   return str
@@ -83,7 +84,7 @@ export async function POST(request) {
       title,
       slug: uniqueSlug,
       excerpt,
-      content,
+      content: sanitizeBlogContent(content),
       coverImage,
       tags: Array.isArray(tags) ? tags : (tags || "").split(",").map((t) => t.trim()).filter(Boolean),
       author: author || "Raju Molla",

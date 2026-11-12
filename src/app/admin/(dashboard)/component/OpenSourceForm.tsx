@@ -10,6 +10,7 @@ export type OpenSourceFormValues = {
   slug?: string;
   description: string;
   readme?: string;
+  resourceType?: string;
   repoUrl?: string;
   liveUrl?: string;
   coverImage?: string;
@@ -35,6 +36,7 @@ export default function OpenSourceForm({ initial }: { initial?: OpenSourceFormVa
     slug: initial?.slug || "",
     description: initial?.description || "",
     readme: initial?.readme || "",
+    resourceType: initial?.resourceType || "",
     repoUrl: initial?.repoUrl || "",
     liveUrl: initial?.liveUrl || "",
     coverImage: initial?.coverImage || "",
@@ -116,6 +118,16 @@ export default function OpenSourceForm({ initial }: { initial?: OpenSourceFormVa
             value={values.description}
             onChange={(e) => update("description", e.target.value)}
             placeholder="A lightweight API for tracking visa application status…"
+          />
+        </Field>
+
+        <Field label="Resource type" hint="Optional label, for example: Research tool or Publication">
+          <input
+            style={inputStyle}
+            className="w-full rounded-md border px-4 py-2.5 outline-none"
+            value={values.resourceType}
+            onChange={(e) => update("resourceType", e.target.value)}
+            placeholder="Research tool"
           />
         </Field>
 

@@ -1,50 +1,16 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Star, ExternalLink, Github } from "lucide-react";
 import Navbar from "../navbar/page";
-import Footer from "../component/Footer";
-import { HANDBOOK_PROJECT } from "@/libs/handbookContent";
+import connectMongoDb from "@/libs/mongodb";
+import OpenSource from "@/models/openSource";
 
-type Project = {
-  _id: string;
-  title: string;
-  slug: string;
-  description: string;
-  techStack: string[];
-  repoUrl?: string;
-  liveUrl?: string;
-  stars: number;
-  featured: boolean;
-  resourceType?: string;
-};
+export const dynamic = "force-dynamic";
 
-export default function OpenSourceListPage() {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/api/opensource?status=published&limit=50");
-        const data = await res.json();
-        const publishedProjects: Project[] = data.projects || [];
-        setProjects(
-          publishedProjects.some(
-            (project) => project.slug === HANDBOOK_PROJECT.slug
-          )
-            ? publishedProjects
-            : [...publishedProjects, HANDBOOK_PROJECT]
-        );
-      } catch (err) {
-        console.error(err);
-        setProjects([HANDBOOK_PROJECT]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+export default async function OpenSourceListPage() {
+  await connectMongoDb();
+  const projects = await OpenSource.find({ status: "published" })
+    .sort({ featured: -1, createdAt: -1 })
+    .lean();
 
   return (
     <>
@@ -59,18 +25,14 @@ export default function OpenSourceListPage() {
           </p>
 
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {loading ? (
-              <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
-                Loading…
-              </p>
-            ) : projects.length === 0 ? (
+            {projects.length === 0 ? (
               <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
                 No projects published yet — check back soon.
               </p>
             ) : (
               projects.map((project) => (
                 <div
-                  key={project._id}
+                  key={String(project._id)}
                   className="rounded-lg border p-6 flex flex-col"
                   style={{ background: "var(--surface)", borderColor: "var(--border)" }}
                 >
@@ -80,9 +42,7 @@ export default function OpenSourceListPage() {
                       className="font-display text-lg font-semibold"
                       style={{ color: "var(--text)" }}
                     >
-                      <p>
-                        {project.title}
-                      </p>
+                      <p>{project.title}</p>
                     </Link>
                     {project.featured && (
                       <Star size={16} style={{ color: "var(--signal)" }} fill="var(--signal)" />
@@ -104,7 +64,7 @@ export default function OpenSourceListPage() {
 
                   {project.techStack?.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-4">
-                      {project.techStack.map((tech) => (
+                      {project.techStack.map((tech: string) => (
                         <span
                           key={tech}
                           className="text-xs font-mono px-2 py-0.5 rounded-full"
@@ -135,7 +95,11 @@ export default function OpenSourceListPage() {
                         className="flex items-center gap-1.5 hover:opacity-80"
                       >
                         <ExternalLink size={14} />{" "}
-                        {project.resourceType ? "Publication" : "Live"}
+                        {project.resourceType?.toLowerCase().includes("publication")
+                          ? "Publication"
+                          : project.resourceType
+                            ? "Visit website"
+                            : "Live"}
                       </a>
                     )}
                     {project.stars > 0 && (
@@ -150,7 +114,6 @@ export default function OpenSourceListPage() {
           </div>
         </div>
       </main>
-      {/* <Footer /> */}
     </>
   );
 }

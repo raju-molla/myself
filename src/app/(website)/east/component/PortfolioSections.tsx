@@ -1,6 +1,7 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import Link from "next/link";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -50,6 +51,7 @@ const projects = [
     tools: ["Python", "Scikit-learn", "TensorFlow", "SHAP"],
     href: "https://ieee-dataport.org/documents/iot-cloud-sec",
     link: "Explore the dataset",
+    articleHref: null,
     icon: Database,
     tone: "lime",
   },
@@ -62,6 +64,7 @@ const projects = [
     tools: ["ASP.NET", "Razor Pages", "SQL Server"],
     href: "https://microfin.grapestl.com/",
     link: "View platform",
+    articleHref: null,
     icon: Network,
     tone: "coral",
   },
@@ -74,6 +77,7 @@ const projects = [
     tools: ["Node.js", "Express.js", "MongoDB"],
     href: null,
     link: null,
+    articleHref: null,
     icon: ShieldCheck,
     tone: "blue",
   },
@@ -164,6 +168,83 @@ function Eyebrow({ children }: { children: ReactNode }) {
       <span className="h-px w-6" style={{ background: "var(--accent)" }} />
       {children}
     </p>
+  );
+}
+
+type FeaturedProject = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  techStack: string[];
+  liveUrl?: string;
+};
+
+function FeaturedProjectCards() {
+  const [projects, setProjects] = useState<FeaturedProject[]>([]);
+
+  useEffect(() => {
+    fetch("/api/opensource?status=published&featured=true&limit=4")
+      .then((response) => {
+        if (!response.ok) throw new Error(`Failed to load featured projects (${response.status})`);
+        return response.json();
+      })
+      .then((data) => setProjects(data.projects || []))
+      .catch((error) => console.error("Failed to load featured projects:", error));
+  }, []);
+
+  if (projects.length === 0) return null;
+
+  return (
+    <div className="mt-12">
+      <h3 className="mb-5 font-mono text-xs uppercase tracking-[0.18em]" style={{ color: "var(--text-faint)" }}>
+        Featured projects and resources
+      </h3>
+      <div className="grid gap-4 md:grid-cols-2">
+        {projects.map((project) => (
+          <article
+            key={project._id}
+            className="rounded-3xl border p-6 sm:p-8"
+            style={{ background: "var(--surface)", borderColor: "var(--border)" }}
+          >
+            <Link
+              href={`/east/open-source/${project.slug}`}
+              className="font-display text-2xl font-medium"
+              style={{ color: "var(--text)" }}
+            >
+              {project.title}
+            </Link>
+            <p className="mt-3 text-sm leading-6" style={{ color: "var(--text-muted)" }}>
+              {project.description}
+            </p>
+            {project.techStack?.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {project.techStack.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border px-2.5 py-1 font-mono text-[9px]"
+                    style={{ borderColor: "var(--border-strong)", color: "var(--text-faint)" }}
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            )}
+            {project.liveUrl && (
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 text-xs font-medium"
+                style={{ color: "var(--accent)" }}
+              >
+                Visit project <ArrowUpRight size={14} />
+              </a>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -347,7 +428,7 @@ export default function PortfolioSections() {
             </p>
           </Reveal>
 
-          <div className="mt-12 grid gap-4 lg:grid-cols-3">
+          <div className="mt-12 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
             {projects.map((project, index) => {
               const Icon = project.icon;
               return (
@@ -355,7 +436,7 @@ export default function PortfolioSections() {
                   <article className={`project-card project-card-${project.tone} group relative flex h-full min-h-[410px] flex-col overflow-hidden rounded-3xl border p-6 sm:p-8`}>
                     <div className="flex items-start justify-between">
                       <span className="font-mono text-xs tracking-[0.16em]" style={{ color: "var(--text-faint)" }}>
-                        {project.index} / 03
+                        {project.index}
                       </span>
                       <span className="project-icon flex h-12 w-12 items-center justify-center rounded-full border">
                         <Icon size={21} />
@@ -389,12 +470,22 @@ export default function PortfolioSections() {
                           {project.link} <ArrowUpRight size={14} />
                         </a>
                       )}
+                      {project.articleHref && (
+                        <Link
+                          href={project.articleHref}
+                          className="mt-3 inline-flex items-center gap-2 text-xs font-medium"
+                          style={{ color: "var(--text-muted)" }}
+                        >
+                          Read the project story <ArrowRight size={13} />
+                        </Link>
+                      )}
                     </div>
                   </article>
                 </Reveal>
               );
             })}
           </div>
+          <FeaturedProjectCards />
         </div>
       </section>
 

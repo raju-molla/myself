@@ -6,6 +6,7 @@ const openSourceSchema = new Schema(
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     description: { type: String, required: true, trim: true, maxlength: 400 },
     readme: { type: String, trim: true },
+    resourceType: { type: String, trim: true },
     repoUrl: { type: String, trim: true },
     liveUrl: { type: String, trim: true },
     coverImage: { type: String, trim: true },

@@ -23,13 +23,16 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.rajumolla.com"),
   title: "Raju Molla — PhD Researcher in Computer Science",
   description:
-    "Raju Molla is a PhD researcher in Computer Science at Keele University, working across AI for cybersecurity, adaptive intrusion detection, and trustworthy machine learning.",
+    "Raju Molla is a PhD researcher at Keele University and creator of ScholarlyNotes, a free-to-start research workspace for discovering papers, organizing sources, citations, and research notes.",
   keywords: [
     "Raju Molla",
     "PhD Researcher",
     "Keele University",
+    "ScholarlyNotes",
+    "free research workspace",
     "Cybersecurity Researcher",
     "Intrusion Detection System",
     "Explainable AI",
@@ -40,7 +43,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Raju Molla — PhD Researcher in Computer Science",
     description:
-      "PhD researcher at Keele University working across AI for cybersecurity, adaptive intrusion detection, and trustworthy machine learning.",
+      "PhD researcher at Keele University and creator of ScholarlyNotes, a free-to-start workspace for paper discovery, research libraries, citations, and notes.",
     type: "website",
   },
 };

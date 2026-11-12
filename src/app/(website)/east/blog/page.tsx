@@ -1,50 +1,16 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import Navbar from "../navbar/page";
-import Footer from "../component/Footer";
-import { HANDBOOK_BLOG_POST } from "@/libs/handbookContent";
+import connectMongoDb from "@/libs/mongodb";
+import Blog from "@/models/blog";
 
-type Blog = {
-  _id: string;
-  title: string;
-  slug: string;
-  excerpt?: string;
-  tags: string[];
-  publishedAt?: string;
-  createdAt: string;
-  views: number;
-};
+export const dynamic = "force-dynamic";
 
-export default function BlogListPage() {
-  const [blogs, setBlogs] = useState<Blog[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/api/blogs?status=published&limit=50");
-        const data = await res.json();
-        const publishedBlogs: Blog[] = data.blogs || [];
-        setBlogs(
-          publishedBlogs.some((blog) => blog.slug === HANDBOOK_BLOG_POST.slug)
-            ? publishedBlogs
-            : [...publishedBlogs, HANDBOOK_BLOG_POST].sort(
-                (a, b) =>
-                  new Date(b.publishedAt || b.createdAt).getTime() -
-                  new Date(a.publishedAt || a.createdAt).getTime()
-              )
-        );
-      } catch (err) {
-        console.error(err);
-        setBlogs([HANDBOOK_BLOG_POST]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+export default async function BlogListPage() {
+  await connectMongoDb();
+  const blogs = await Blog.find({ status: "published" })
+    .sort({ publishedAt: -1, createdAt: -1 })
+    .lean();
 
   return (
     <>
@@ -59,18 +25,14 @@ export default function BlogListPage() {
           </p>
 
           <div className="mt-12 space-y-6">
-            {loading ? (
-              <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
-                Loading…
-              </p>
-            ) : blogs.length === 0 ? (
+            {blogs.length === 0 ? (
               <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
                 No posts published yet — check back soon.
               </p>
             ) : (
               blogs.map((blog) => (
                 <Link
-                  key={blog._id}
+                  key={String(blog._id)}
                   href={`/east/blog/${blog.slug}`}
                   className="block rounded-lg border p-6 transition-colors hover:border-[var(--border-strong)]"
                   style={{ background: "var(--surface)", borderColor: "var(--border)" }}
@@ -104,7 +66,6 @@ export default function BlogListPage() {
           </div>
         </div>
       </main>
-      {/* <Footer /> */}
     </>
   );
 }

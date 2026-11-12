@@ -3,6 +3,7 @@ import Blog from "@/models/blog";
 import { NextResponse } from "next/server";
 import mongoose from "mongoose";
 import { getAdminFromRequest } from "@/libs/auth";
+import sanitizeBlogContent from "@/libs/sanitizeBlogContent";
 
 async function findBlog(id) {
   if (mongoose.Types.ObjectId.isValid(id)) {
@@ -62,7 +63,9 @@ export async function PUT(request, { params }) {
       if (body[key] !== undefined) {
         blog[key] = key === "tags" && !Array.isArray(body[key])
           ? (body[key] || "").split(",").map((t) => t.trim()).filter(Boolean)
-          : body[key];
+          : key === "content"
+            ? sanitizeBlogContent(body[key])
+            : body[key];
       }
     }
 

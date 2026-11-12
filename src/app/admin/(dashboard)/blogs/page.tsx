@@ -9,7 +9,7 @@ type Blog = {
   _id: string;
   title: string;
   slug: string;
-  status: "draft" | "published";
+  status: string;
   tags: string[];
   createdAt: string;
 };
@@ -17,16 +17,19 @@ type Blog = {
 export default function AdminBlogsPage() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/blogs?limit=100");
+      if (!res.ok) throw new Error(`Failed to load blog posts (${res.status})`);
       const data = await res.json();
       setBlogs(data.blogs || []);
     } catch (err) {
       console.error(err);
+      setLoadError("Saved blog posts could not be loaded. Refresh the page to try again.");
     } finally {
       setLoading(false);
     }
@@ -58,6 +61,11 @@ export default function AdminBlogsPage() {
       />
 
       <div className="px-6 sm:px-10 py-8">
+        {loadError && (
+          <p className="mb-4 text-sm" role="alert" style={{ color: "var(--signal)" }}>
+            {loadError}
+          </p>
+        )}
         {loading ? (
           <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
             Loading…

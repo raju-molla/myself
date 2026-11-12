@@ -9,25 +9,29 @@ type Project = {
   _id: string;
   title: string;
   slug: string;
-  status: "draft" | "published";
+  status: string;
   featured: boolean;
   techStack: string[];
   repoUrl?: string;
+  createdAt?: string;
 };
 
 export default function AdminOpenSourcePage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const load = async () => {
     setLoading(true);
     try {
       const res = await fetch("/api/opensource?limit=100");
+      if (!res.ok) throw new Error(`Failed to load projects (${res.status})`);
       const data = await res.json();
       setProjects(data.projects || []);
     } catch (err) {
       console.error(err);
+      setLoadError("Saved projects could not be loaded. Refresh the page to try again.");
     } finally {
       setLoading(false);
     }
@@ -59,6 +63,11 @@ export default function AdminOpenSourcePage() {
       />
 
       <div className="px-6 sm:px-10 py-8">
+        {loadError && (
+          <p className="mb-4 text-sm" role="alert" style={{ color: "var(--signal)" }}>
+            {loadError}
+          </p>
+        )}
         {loading ? (
           <p className="font-mono text-sm" style={{ color: "var(--text-faint)" }}>
             Loading…

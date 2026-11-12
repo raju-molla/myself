@@ -50,7 +50,7 @@ export async function PUT(request, { params }) {
     }
 
     const updatable = [
-      "title", "slug", "description", "readme", "repoUrl", "liveUrl",
+      "title", "slug", "description", "readme", "resourceType", "repoUrl", "liveUrl",
       "coverImage", "techStack", "stars", "license", "status", "featured",
     ];
     for (const key of updatable) {
