@@ -194,6 +194,7 @@ export default function BlogEditor({
               <ContentEditable
                 className="min-h-[260px] px-4 py-4 outline-none text-sm leading-relaxed"
                 aria-placeholder="Write your post here..."
+                placeholder={<span />}
               />
             }
             placeholder={
