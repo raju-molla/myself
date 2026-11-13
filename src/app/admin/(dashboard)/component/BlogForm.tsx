@@ -127,7 +127,7 @@ export default function BlogForm({ initial }: { initial?: BlogFormValues }) {
           />
         </Field>
 
-        <Field label="Content" hint="Markdown supported by your renderer of choice">
+        <Field label="Content" hint="Supports safe HTML for rich blog posts.">
           <textarea
             style={inputStyle}
             className="w-full rounded-md border px-4 py-2.5 outline-none font-mono text-sm leading-relaxed"

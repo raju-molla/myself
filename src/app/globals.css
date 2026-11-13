@@ -76,6 +76,39 @@ body {
   font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
 }
 
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  margin-block: 1.5em 0.6em;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.article-content h1 {
+  font-size: 1.875rem;
+}
+
+.article-content h2 {
+  font-size: 1.5rem;
+}
+
+.article-content h3 {
+  font-size: 1.25rem;
+}
+
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  font-size: 1.125rem;
+}
+
+.article-content p {
+  margin-block: 0 1em;
+}
+
 .font-display {
   font-family: var(--font-display), ui-serif, Georgia, serif;
 }
